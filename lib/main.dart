@@ -1,3 +1,4 @@
+import 'package:exam/core/theme.dart';
 import 'package:exam/screens/AuthenticationScreen.dart';
 import 'package:exam/screens/HomeScreen.dart';
 import 'package:exam/screens/LaunchScreen.dart';

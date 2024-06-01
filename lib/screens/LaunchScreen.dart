@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'HomeScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -18,26 +20,47 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor:dGrenn,
+      body: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(
-              'WHATSAPP CLONE',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
+            Column(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Messages",style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                fontSize: 50,
+              fontStyle: FontStyle.italic,
+                letterSpacing: 2.0)
+                ),
+                Text("AppCDP",style: GoogleFonts.pattaya(
+                  fontSize: 50,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.w700
+                )),
+                SizedBox(height: 20),
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey),
+                ),
+
+
+              ],
+            ),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle
               ),
-            ),
-            SizedBox(height: 20),
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
+              child: Image.asset('images/avatar/launch.jpeg',
+                height: 150,
+                width: 150,
+              ),
+            )
           ],
         ),
       ),
+
     );
   }
 }
