@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'HomeScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:async';
+import 'chatScreen.dart';
+late bool _passwordVisible ;
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -19,106 +24,130 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Authentication')),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+    return GestureDetector(
+        onTap: ()=> FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+            backgroundColor: dGrenn,
+            body: ListView(
+
+                children: [
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Hello",style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: Colors.white,
+                                fontSize: 50,
+                                fontStyle: FontStyle.italic,
+                                letterSpacing: 2.0)
+                            ),
+                            Text("Please Connect",style: GoogleFonts.pattaya(
+                                fontSize: 50,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white,
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w700
+                            )
+                            ),
+
+
+                          ],
+                        ),
+
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.lock, size: 60, color: Colors.purpleAccent),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        prefixIcon: Icon(Icons.email, color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+
+                  Container(
+                    width: 400,
+                    height:400,
+
+
+                    child: Container(
+
+                      color: dWhite,
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+
+                                TextFormField(
+                                  controller: _emailController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Email',
+                                    prefixIcon: Icon(Icons.email, color: Colors.grey),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (value) {
+                                    if (value!.isEmpty || !value.contains('@')) {
+                                      return 'Please enter a valid email';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  controller: _passwordController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Password (6 characters min)',
+                                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isPasswordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isPasswordVisible = !_isPasswordVisible;
+                                        });
+                                      },
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  obscureText: !_isPasswordVisible,
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 6) {
+                                      return 'Password must be at least 6 characters long';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 25),
+                                ElevatedButton(
+                                  onPressed: _submit,
+                                  child: Text('Login'),
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white, backgroundColor: Colors.brown,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 50,
+                                      vertical: 15,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+
+
+                              ]
+                          )
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password (6 characters min)',
-                        prefixIcon: Icon(Icons.lock, color: Colors.grey),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      obscureText: !_isPasswordVisible,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 6) {
-                          return 'Password must be at least 6 characters long';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 25),
-                    ElevatedButton(
-                      onPressed: _submit,
-                      child: Text('Login'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white, backgroundColor: Colors.purpleAccent,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 15,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+                  )
+                ]
+            )
+        )
     );
   }
 }
-
-
